@@ -1,0 +1,47 @@
+name: "Auto-Localize"
+author: "Franck Trouillez"
+description: "Automatically localize your project using a translation API"
+branding:
+  color: "green"
+  icon: "file-text"
+inputs:
+  source_language:
+    description: "The source language of the text to translate"
+    required: true
+    default: "en"
+  target_languages:
+    description: "The target languages to translate the text to. Comma-separated if multiple languages are used"
+    required: true
+  source_files_directory:
+    description: "The directory containing the source files to translate. You can use {language} as a placeholder for the source language"
+    required: true
+  target_files_directory:
+    description: "The directory where the translated files will be saved. You can use {language} as a placeholder for the target language"
+    required: true
+  variable_pattern:
+    description: The pattern to use to identify the variables in the source files. Use a regex group to capture the variable name, like "%{(.*?)}" for instance
+    required: false
+    default: "%{(.*?)}"
+  api_keys:
+    description: "The API keys for the API. Comma-separated if multiple keys are used"
+    required: true
+  file_type:
+    description: "The file type of the source files"
+    required: true
+    default: "yaml"
+  api_type:
+    description: "The type of the translation API"
+    required: true
+    default: "deepl"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    SOURCE_LANGUAGE: ${{ inputs.source_language }}
+    TARGET_LANGUAGES: ${{ inputs.target_languages }}
+    SOURCE_FILES_DIRECTORY: ${{ inputs.source_files_directory }}
+    TARGET_FILES_DIRECTORY: ${{ inputs.target_files_directory }}
+    VARIABLE_PATTERN: ${{ inputs.variable_pattern }}
+    API_KEYS: ${{ inputs.api_keys }}
+    FILE_TYPE: ${{ inputs.file_type }}
+    API_TYPE: ${{ inputs.api_type }}
