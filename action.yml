@@ -33,6 +33,10 @@ inputs:
     description: "The type of the translation API"
     required: true
     default: "deepl"
+  prune_useless_keys:
+    description: "Whether to prune keys that are not present in the source language"
+    required: false
+    default: "true"
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -45,3 +49,4 @@ runs:
     API_KEYS: ${{ inputs.api_keys }}
     FILE_TYPE: ${{ inputs.file_type }}
     API_TYPE: ${{ inputs.api_type }}
+    PRUNE_USELESS_KEYS: ${{ inputs.prune_useless_keys }}
