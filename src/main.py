@@ -49,6 +49,8 @@ for source_file in source_files:
       )
       target_translation_data = target_data
       for key in keys[:-1]:
+        if type(target_translation_data.get(key)) != dict:
+          target_translation_data[key] = {}
         target_translation_data = target_translation_data.setdefault(key, {})
       target_translation_data[keys[-1]] = target_translation
     print(f"[{source_file} - {target_language}] Writing translations to '{target_file}'")
