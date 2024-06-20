@@ -64,14 +64,22 @@ class BaseFile:
     :return: A list of keys that are missing in the target dictionary.
     """
     missing_keys = []
+    if type(target_dict) != dict:
+      for nested_key in BaseFile.__get_nested_keys(source_dict):
+        missing_keys.append(current_key_path + nested_key)
+      return missing_keys
     for key, value in source_dict.items():
       if value is None:
         continue
+
       if type(value) == dict:
-        missing_keys.extend(BaseFile.find_missing_keys(value, target_dict.get(key, {}), current_key_path + [key]))
+          missing_keys.extend(BaseFile.find_missing_keys(value, target_dict.get(key, {}), current_key_path + [key]))
       else:
         if key not in target_dict:
           missing_keys.append(current_key_path + [key])
+        else:
+          if type(value) != type(target_dict[key]):
+            missing_keys.append(current_key_path + [key])
     return missing_keys
 
   @staticmethod
@@ -110,3 +118,22 @@ class BaseFile:
     if directories:
       directories = "/".join(directories)
       os.makedirs(directories, exist_ok=True)
+
+  @staticmethod
+  def __get_nested_keys(object: dict) -> list[str]:
+    """
+    Get the nested keys for a dictionary.
+
+    :param object: The dictionary to get the nested keys for.
+    :return: A list of nested keys.
+    """
+    keys = []
+    if type(object) != dict:
+      return keys
+    for key, value in object.items():
+      if type(value) == dict:
+        for nested_key in BaseFile.__get_nested_keys(value):
+          keys.append([key, *nested_key])
+      else:
+        keys.append([key])
+    return keys
