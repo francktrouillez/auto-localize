@@ -74,6 +74,25 @@ class BaseFile:
           missing_keys.append(current_key_path + [key])
     return missing_keys
 
+  @staticmethod
+  def prune_useless_keys(object: dict, model_object: dict) -> dict:
+    """
+    Prune useless keys from a dictionary based on a model object.
+
+    :param object: The dictionary to prune keys from.
+    :param model_object: The model object to use for pruning.
+    :return: The dictionary with the keys pruned.
+    """
+    pruned_data = {}
+    for key, value in object.items():
+      if key not in model_object:
+        continue
+      if type(value) == dict:
+        pruned_data[key] = BaseFile.prune_useless_keys(value, model_object[key])
+      else:
+        pruned_data[key] = value
+    return pruned_data
+
   # --- Protected methods ---
 
   @staticmethod

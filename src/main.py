@@ -16,6 +16,7 @@ TARGET_FILES_DIRECTORY = os.environ["TARGET_FILES_DIRECTORY"]
 API_KEYS = os.environ["API_KEYS"].split(",")
 FILE_TYPE = os.environ["FILE_TYPE"]
 API_TYPE = os.environ["API_TYPE"]
+PRUNE_USELESS_KEYS = os.environ["PRUNE_USELESS_KEYS"].lower() == "true" if "PRUNE_USELESS_KEYS" in os.environ else False
 
 # --- Main script ---
 
@@ -52,4 +53,6 @@ for source_file in source_files:
         target_translation_data = target_translation_data.setdefault(key, {})
       target_translation_data[keys[-1]] = target_translation
     print(f"[{source_file} - {target_language}] Writing translations to '{target_file}'")
+    if PRUNE_USELESS_KEYS:
+      target_data = file_class.prune_useless_keys(target_data, source_data)
     file_class.write(target_file, target_data)

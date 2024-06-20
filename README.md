@@ -27,6 +27,8 @@ This action generates localized strings for a given project based on the source 
 **optional**(default: `"%{(.*?)}"`) The pattern to use to identify the variables in the source files. **Use a regex group to capture the variable name**, like `"%{(.*?)}"` for instance.
 ### `file_type`
 **optional**(default: `yaml`) The file type of the source files.
+### `prune_useless_keys`
+**optional**(default: `true`) Whether to prune the keys that are not present in the source language files.
 
 
 ## Example usage
@@ -54,7 +56,8 @@ jobs:
         api_keys: ${{ secrets.DEEPL_API_KEY }}
         api_type: 'deepl'
         variable_pattern: '"%{(.*?)}"'
-        file_type: 'yaml'
+        file_type: 'yaml'$
+        prune_useless_keys: 'true'
     - name: Commit and push
       run: |
         git config --local user.email "auto-localize@github-actions.com"
