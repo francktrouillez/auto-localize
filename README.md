@@ -24,7 +24,7 @@ This action generates localized strings for a given project based on the source 
 ### `api_type`
 **optional**(default: `deepl`) The type of the translation API.
 ### `variable_pattern`
-**optional**(default: `"%{(.*?)}"`) The pattern to use to identify the variables in the source files. **Use a regex group to capture the variable name**, like `"%{(.*?)}"` for instance.
+**optional**(default: `%{(.*?)}`) The pattern to use to identify the variables in the source files. **Use a regex group to capture the variable name**, like `%{(.*?)}` for instance.
 ### `file_type`
 **optional**(default: `yaml`) The file type of the source files.
 ### `prune_useless_keys`
@@ -55,8 +55,8 @@ jobs:
         target_files_directory: 'src/locales/{language}'
         api_keys: ${{ secrets.DEEPL_API_KEY }}
         api_type: 'deepl'
-        variable_pattern: '"%{(.*?)}"'
-        file_type: 'yaml'$
+        variable_pattern: '%{(.*?)}'
+        file_type: 'yaml'
         prune_useless_keys: 'true'
     - name: Commit and push
       run: |
